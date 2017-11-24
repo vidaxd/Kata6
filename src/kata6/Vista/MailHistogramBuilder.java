@@ -1,16 +1,24 @@
 package kata6.Vista;
 
 import java.util.List;
+import kata6.Controlador.Attribute;
 import kata6.Modelo.Histogram;
 import kata6.Modelo.Mail;
 
 
-public class MailHistogramBuilder {
+public class MailHistogramBuilder <T> {
     
-    public static Histogram<String> build(List<Mail> mail) {
-        Histogram<String> histo= new Histogram<String>();
-        for (Mail mail1 : mail) {
-            histo.increment(mail1.getDomain());
+    private final List <T> items;
+
+    public MailHistogramBuilder(List<T> items) {
+        this.items = items;
+    }
+    
+    public <A>Histogram<A> build(Attribute<T, A> attribute) {
+        Histogram<A> histo= new Histogram<>();
+        for (T item : items) {
+            A value = attribute.get(item);
+            histo.increment(value);
         }
         return histo;
     }
